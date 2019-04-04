@@ -34,11 +34,15 @@
       "node": true
     },
     "extends": [
-      "plugin:vue/strongly-recommended",
+      "plugin:vue/recommended",
       "eslint:recommended"
     ],
     "parserOptions": {
       "parser": "babel-eslint"
+    },
+    "rules": {
+      "vue/no-unused-vars": "warning",
+      "no-unused-vars": 1
     }
   },
   "postcss": {
