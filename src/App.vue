@@ -11,7 +11,7 @@
         <v-container
           grid-list-lg
         >
-          <v-layout >
+          <v-layout>
             <v-flex>
               <v-text-field
                 v-model="searchText"
@@ -30,12 +30,11 @@
               </v-btn>
             </v-flex>
           </v-layout>
-           <post
+          <post
             v-for="(post, index) in posts"
-            :post="post"
             :key="index"
-           >
-           </post>
+            :post="post"
+          />
         </v-container>
       </v-card>
     </v-content>
