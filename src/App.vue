@@ -34,6 +34,7 @@
             v-for="(post, index) in posts"
             :key="index"
             :post="post"
+            :loadcomments="isLoadComments"
           />
         </v-container>
       </v-card>
@@ -54,14 +55,8 @@ export default {
     return {
       searchText: '',
       posts: [],
+      isLoadComments: false,
     }
-  },
-  mounted () {
-    var vm =this;
-    axios.get("https://jsonplaceholder.typicode.com/posts")
-    .then(function (response) {
-        vm.posts=response.data;
-      })
   },
   methods: {
     loadPost () {
@@ -76,17 +71,5 @@ export default {
 }
 </script>
 <style>
-  .flex-Padding {
-    padding-top: 18px !important;
-    padding-left: 3px !important;
-    padding-right: 3px !important;
-    padding-bottom: 3px !important;
-  }
-  .flex-btn-padding {
-    padding-top: 18px !important;
-    padding-left: 3px !important;
-    padding-right: 3px !important;
-    padding-bottom: 3px !important;
-  }
 </style>
 

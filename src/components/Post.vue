@@ -1,30 +1,28 @@
 <template>
-<v-layout>
-  <v-flex>
-    <v-card>
-      <v-card-title primary-title>
-        <div>
+  <v-layout>
+    <v-flex>
+      <v-card>
+        <v-card-title primary-title>
           <div>
-              Post Id: {{ post.id }}
+            <div class="headline">
+              {{ post.title }}
+            </div>
+            <span>{{ post.body }}</span>
           </div>
-          <div
-            class="headline"
-          >
-            {{ post.title }}
-          </div>
-          <span>
-            {{ post.body }}
-          </span>
-        </div>
-      </v-card-title>
-    </v-card>
-  </v-flex>
-</v-layout>
+        </v-card-title>
+        <comments :postId="post.id" />
+      </v-card>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>
+import Comments from "./Comments";
 export default {
-    props: ['post'],
+  components: {
+    Comments
+  },
+  props: ['post']
 };
 </script>
 
