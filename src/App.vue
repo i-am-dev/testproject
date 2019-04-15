@@ -7,9 +7,8 @@
       <v-spacer />
     </v-toolbar>
     <v-content>
-      <v-card>
+      <v-card min-height="100%">
         <v-container
-          fluid
           grid-list-lg
         >
           <v-layout>
@@ -31,28 +30,11 @@
               </v-btn>
             </v-flex>
           </v-layout>
-          <v-layout 
+          <post
             v-for="(post, index) in posts"
             :key="index"
-          >
-            <v-flex xs12>
-              <v-card>
-                <v-card-title primary-title>
-                  <div>
-                    <div>
-                      Post Id: {{ post.id }}
-                    </div>
-                    <div class="headline">
-                      {{ post.title }}
-                    </div>
-                    <span>
-                      {{ post.body }}
-                    </span>
-                  </div>
-                </v-card-title>
-              </v-card>
-            </v-flex>
-          </v-layout>
+            :post="post"
+          />
         </v-container>
       </v-card>
     </v-content>
@@ -61,10 +43,12 @@
 
 <script>
 import axios from "axios";
+import Post from "./components/Post";
 
 export default {
   name: 'App',
   components: {
+    Post,
   },
   data () {
     return {
