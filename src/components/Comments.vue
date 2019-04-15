@@ -3,7 +3,7 @@
     <v-flex>
       <v-card>
         <v-card-title primary-title>
-          <div class="comments-headline">Comments</div>
+          <div class="comments-headline">Comments({{commentsCount}})</div>
         </v-card-title>
         <v-list subheader three-line offset-md3>
           <template v-for="(comment, index) in comments">
@@ -36,7 +36,7 @@ export default {
   props: ['postId'],
   data() {
     return {
-      comments: []
+      comments: [],
     };
   },
   mounted() {
@@ -49,7 +49,15 @@ export default {
       )
       .then(function(response) {
         vm.comments = response.data;
+      })
+      .catch(function (){
+        vm.comments =[];
       });
+  },
+  computed: {
+    commentsCount: function () {
+      return this.comments.length;
+    }
   }
 };
 </script>
