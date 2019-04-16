@@ -26,6 +26,7 @@
             </v-flex>
             <v-flex> 
               <v-btn
+                id="loadPost"
                 large 
                 color="primary"
                 @click="loadPost"
