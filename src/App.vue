@@ -35,9 +35,7 @@
             </v-flex>
           </v-layout>
           <div v-if="!noPostResultText">
-          <post
-            v-for="(post, index) in posts"
-            :key="index"
+          <post            
             :post="post"
           />
           </div>
@@ -62,7 +60,7 @@ export default {
   data () {
     return {
       searchText: '',
-      posts: [],
+      post: null,
       noPostResultText: '',
       formHasErrors: false,
     }
@@ -78,14 +76,14 @@ export default {
         vm.noPostResultText="Loading...";
         axios.get("https://jsonplaceholder.typicode.com/posts/" + this.searchText)
         .then(function (response) {
-          vm.posts = [];
-          vm.posts.push(response.data);
+          vm.post = response.data;
           vm.noPostResultText='';
         })
         .catch(function (){
+          vm.post = null;
           vm.noPostResultText="No post found!";
         })
-      }
+      } 
     },
   },
 }
