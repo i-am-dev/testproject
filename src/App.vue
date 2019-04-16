@@ -14,8 +14,12 @@
           <v-layout>
             <v-flex>
               <v-text-field
+              ref="searchText"
                 v-model="searchText"
+                :rules="[() => !!searchText || 'This field is required']"
                 label="Post Id"
+                mask="##########"
+                required
                 single-line
                 outline
               />           
@@ -30,11 +34,16 @@
               </v-btn>
             </v-flex>
           </v-layout>
+          <div v-if="!noPostResultText">
           <post
             v-for="(post, index) in posts"
             :key="index"
             :post="post"
           />
+          </div>
+          <div v-if="noPostResultText" class="headline">
+            {{ noPostResultText }}
+          </div>
         </v-container>
       </v-card>
     </v-content>
@@ -54,39 +63,33 @@ export default {
     return {
       searchText: '',
       posts: [],
+      noPostResultText: '',
+      formHasErrors: false,
     }
-  },
-  mounted () {
-    var vm =this;
-    axios.get("https://jsonplaceholder.typicode.com/posts")
-    .then(function (response) {
-        vm.posts=response.data;
-      })
   },
   methods: {
     loadPost () {
       var vm =this;
-      axios.get("https://jsonplaceholder.typicode.com/posts/" + this.searchText)
-      .then(function (response) {
-        vm.posts = [];
-        vm.posts.push(response.data);
-      })
+      vm.formHasErrors = false;
+      if (!vm.searchText) vm.formHasErrors = true;
+     /*  vm.$refs[vm.searchText].validate(true) */
+      if(!vm.formHasErrors)
+      {
+        vm.noPostResultText="Loading...";
+        axios.get("https://jsonplaceholder.typicode.com/posts/" + this.searchText)
+        .then(function (response) {
+          vm.posts = [];
+          vm.posts.push(response.data);
+          vm.noPostResultText='';
+        })
+        .catch(function (){
+          vm.noPostResultText="No post found!";
+        })
+      }
     },
   },
 }
 </script>
 <style>
-  .flex-Padding {
-    padding-top: 18px !important;
-    padding-left: 3px !important;
-    padding-right: 3px !important;
-    padding-bottom: 3px !important;
-  }
-  .flex-btn-padding {
-    padding-top: 18px !important;
-    padding-left: 3px !important;
-    padding-right: 3px !important;
-    padding-bottom: 3px !important;
-  }
 </style>
 
