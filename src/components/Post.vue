@@ -13,7 +13,7 @@
             <h3>Loading...</h3>
           </div>
         </v-card-title>
-        <comments v-if="post" :postId="post.id" />
+        <Comments v-if="post" :post-id="post.id" />
       </v-card>
     </v-flex>
   </v-layout>
@@ -21,41 +21,50 @@
 
 <script>
 import Comments from "./Comments";
-import { RepositoryFactory } from "./../repositories/repositoryFactory"
-const postRepository = RepositoryFactory.get('posts')
+import { RepositoryFactory } from "./../repositories/repositoryFactory";
+const postRepository = RepositoryFactory.get("posts");
 
 export default {
   components: {
     Comments
   },
-  props: ['postId'],
+  props: {
+    // eslint-disable-next-line vue/require-default-prop
+    postId: String
+  },
   data() {
     return {
-      post: null,
-    }
+      post: {
+        title: "",
+        id: 0,
+        body: "",
+        userId: 0
+      }
+    };
   },
-  created () {
-    this.fetch()
+  mounted() {
+    this.fetchPost();
   },
   methods: {
-    async fetch () {
+    async fetchPost() {
       try {
-        var response = await postRepository.getPost(this.postId)
+        var response = await postRepository.getPost(this.postId);
 
-        if (response.status === 200){
-          this.post = response.data
+        if (response.status === 200) {
+          this.post = response.data;
         } else {
-          this.post = null
-          console.log(response)
+          this.post = null;
+          console.log(response);
         }
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-      
+    },
+    getThePost() {
+      this.fetchPost();
     }
-  },
+  }
 };
 </script>
 
-<style>
-</style>
+<style></style>

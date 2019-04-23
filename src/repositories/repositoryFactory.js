@@ -1,9 +1,9 @@
-import postRepository from "./postRepository"
+import postRepository from "./postRepository";
 
 const repositories = {
-    posts: postRepository,
-}
+  posts: postRepository
+};
 
 export const RepositoryFactory = {
-    get: name => repositories[name]
-}
+  get: name => repositories[name]
+};
