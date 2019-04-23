@@ -6,9 +6,9 @@
           <div class="comments-headline">Comments({{commentsCount}})</div>
         </v-card-title>
         <v-list subheader three-line offset-md3>
-          <template v-for="(comment, index) in comments">
+          <template v-for="comment in comments">
             <v-list-tile
-              :key="index"
+              :key="comment.id"
             >
               <v-list-tile-content>
                 <v-list-tile-sub-title 
@@ -30,9 +30,15 @@
 
 
 <script>
-import axios from "axios";
+import { RepositoryFactory } from "./../repositories/repositoryFactory"
+const postRepository = RepositoryFactory.get('posts')
 
 export default {
+  computed: {
+    commentsCount: function () {
+      return this.comments.length;
+    }
+  },
   props: ['postId'],
   data() {
     return {
@@ -40,23 +46,23 @@ export default {
     };
   },
   mounted() {
-    var vm = this;
-    axios
-      .get(
-        "https://jsonplaceholder.typicode.com/posts/" +
-          this.postId +
-          "/comments"
-      )
-      .then(function(response) {
-        vm.comments = response.data;
-      })
-      .catch(function (){
-        vm.comments =[];
-      });
+    this.fetch()
   },
-  computed: {
-    commentsCount: function () {
-      return this.comments.length;
+  methods: {
+    async fetch () {
+      try {
+        var response = await postRepository.getComments(this.postId)
+
+        if (response.status === 200){
+          this.comments = response.data
+        } else {
+          this.comments = []
+          console.log(response)
+        }
+      } catch (error) {
+        console.log(error)
+      }
+      
     }
   }
 };

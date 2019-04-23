@@ -15,8 +15,8 @@
             <v-flex>
               <v-text-field
               ref="searchText"
-                v-model="searchText"
-                :rules="[() => !!searchText || 'This field is required']"
+                v-model="post"
+                :rules="[() => !!post || 'This field is required']"
                 label="Post Id"
                 mask="##########"
                 required
@@ -29,16 +29,16 @@
                 id="loadPost"
                 large 
                 color="primary"
-                @click="loadPost"
+                @click="loadPostBtnClick"
               >
                 Load
               </v-btn>
             </v-flex>
           </v-layout>
-          <div v-if="!noPostResultText">
-          <post            
-            :post="post"
-          />
+          <div v-if="loadPost">
+            <post            
+              :postId="post"
+            />
           </div>
           <div v-if="noPostResultText" class="headline">
             {{ noPostResultText }}
@@ -58,34 +58,30 @@ export default {
   components: {
     Post,
   },
+  computed: {
+    postIdLength () {
+      if (this.post) {
+        return this.post.length
+      }
+      return 0
+    }
+  },
   data () {
     return {
-      searchText: '',
-      post: null,
+      post: "",
       noPostResultText: '',
       formHasErrors: false,
+      loadPost: false,
     }
   },
   methods: {
-    loadPost () {
-      var vm =this;
-      vm.formHasErrors = false;
-      if (!vm.searchText) vm.formHasErrors = true;
-     /*  vm.$refs[vm.searchText].validate(true) */
-      if(!vm.formHasErrors)
-      {
-        vm.noPostResultText="Loading...";
-        axios.get("https://jsonplaceholder.typicode.com/posts/" + this.searchText)
-        .then(function (response) {
-          vm.post = response.data;
-          vm.noPostResultText='';
-        })
-        .catch(function (){
-          vm.post = null;
-          vm.noPostResultText="No post found!";
-        })
-      } 
-    },
+    loadPostBtnClick() {
+      if (this.postIdLength > 0) {
+        this.loadPost = true
+      } else {
+        this.loadPost = false
+      }
+    }
   },
 }
 </script>
