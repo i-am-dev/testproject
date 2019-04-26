@@ -44,6 +44,7 @@ export default {
       return this.comments.length;
     }
   },
+
   mounted() {
     this.fetch();
   },
